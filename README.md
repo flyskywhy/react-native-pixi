@@ -1,19 +1,19 @@
-# expo-pixi
+# react-native-pixi
 
-Tools to use [Pixi.js](http://www.pixijs.com/) in Expo!
+Tools to use [Pixi.js](http://www.pixijs.com/) in React Native!
 
-To get started: `yarn add expo-pixi` in your Expo project and import it with
-`import ExpoPixi from 'expo-pixi';`.
+To get started: `npm install react-native-pixi` in your React Native project and import it with
+`import PIXI from 'react-native-pixi';`.
 
 
 ## Side-Effects
 
-To use Pixi.js with Expo & React Native you will want to import a modified version of Pixi.js like so:
+To use Pixi.js with React Native you will want to import a modified version of Pixi.js like so:
 
 ```js
 
 // ✅
-import { PIXI } from 'expo-pixi';
+import { PIXI } from 'react-native-pixi';
 
 // ❌
 import * as PIXI from 'pixi.js';
@@ -23,13 +23,7 @@ import * as PIXI from 'pixi.js';
 Now you can create a new Application the way you would on the web, but be sure to pass in a `WebGLRenderingContext`.
 
 ```js
-
-// ✅
 const app = new PIXI.Application({ context });
-
-// ❌
-const app = ExpoPIXI.application({ context });
-
 ```
 
 Finally, because of the way React Native currently works you must load in assets asynchronously.
@@ -37,7 +31,7 @@ Finally, because of the way React Native currently works you must load in assets
 ```js
 
 /*
- * Accepts: 
+ * Accepts:
  * - Expo.Asset: import { Asset } from 'expo-asset'; Asset.fromModule( ... );
  * - URL (with file extension): 'http://i.imgur.com/uwrbErh.png'
  * - Static Resource: require('./icon.png')
@@ -46,16 +40,9 @@ Finally, because of the way React Native currently works you must load in assets
 // ✅
 const sprite = await PIXI.Sprite.fromExpoAsync('http://i.imgur.com/uwrbErh.png');
 
-// OR 
+// OR
 
 const texture = await PIXI.Texture.fromExpoAsync('http://i.imgur.com/uwrbErh.png');
-
-// ❌
-const sprite = await ExpoPIXI.spriteAsync('http://i.imgur.com/uwrbErh.png');
-
-// OR 
-
-const texture = await ExpoPIXI.textureAsync('http://i.imgur.com/uwrbErh.png');
 ```
 
 Using web syntax will return a `Promise`, and throw a warning. It's bad practice, but if the asset is loaded already, this will work without throwing a warning.
@@ -65,7 +52,7 @@ const sprite = await PIXI.Sprite.from(require('./icon.png'));
 
 // > console.warning(PIXI.Sprite.from(asset: ${typeof asset}) is not supported. Returning a Promise!);
 
-// OR 
+// OR
 
 const texture = await PIXI.Texture.from(require('./icon.png'));
 
@@ -74,24 +61,17 @@ const texture = await PIXI.Texture.from(require('./icon.png'));
 
 ## Functions
 
-### `ExpoPixi.application(props): PIXI.Application`
-
-> Deprecated: Use `new PIXI.Application({ context });`
+### `new PIXI.Application({ context });`
 
 A helper function to create a `PIXI.Application` from a WebGL context.
-EXGL knows to end a frame when the function: `endFrameEXP` is called on the GL context.
 
 **`context` is the only required prop.**
 
 [Learn more about PIXI.Application props](http://pixijs.download/dev/docs/PIXI.Application.html)
 
-### `ExpoPixi.textureAsync(resource: any): Promise`
+### `PIXI.Texture.fromExpoAsync(resource);`
 
-> Deprecated: Use `PIXI.Texture.fromExpoAsync(resource);`
-
-### `ExpoPixi.spriteAsync(resource: any): Promise`
-
-> Deprecated: Use `PIXI.Sprite.fromExpoAsync(resource);`
+### `PIXI.Sprite.fromExpoAsync(resource);`
 
 a helper function to resolve the asset passed in.
 `textureAsync` accepts:
@@ -106,17 +86,13 @@ You cannot send in relative string paths as Metro Bundler looks for static resou
 
 ---
 
-### `ExpoPixi.sprite({ localUri: string, width: number, height: number }): PIXI.Sprite`
+### `PIXI.Sprite.from(resource);`
 
-> Deprecated: Use `PIXI.Sprite.from(resource);`
-
-### `ExpoPixi.texture({ localUri: string, width: number, height: number }): PIXI.Texture`
-
-> Deprecated: Use `PIXI.Texture.from(resource);`
+### `PIXI.Texture.from(resource);`
 
 Pixi.js does a type check so we wrap our asset in a `HTMLImageElement` shim.
 
-## `ExpoPixi.Sketch`
+## `Pixi.Sketch`
 
 A component used for drawing smooth signatures and sketches.
 
@@ -134,7 +110,7 @@ A component used for drawing smooth signatures and sketches.
 | onChange    |     () => PIXI.Renderer     |   null   | Invoked whenever a user is done drawing a line  |
 | onReady     | () => WebGLRenderingContext |   null   | Invoked when the GL context is ready to be used |
 
-## `ExpoPixi.FilterImage`
+## `Pixi.FilterImage`
 
 A Image component that uses PIXI.Filter
 
@@ -152,14 +128,15 @@ A Image component that uses PIXI.Filter
 
 ```js
 import React from 'react';
-import Expo from 'expo';
-import { PIXI } from 'expo-pixi';
+import {GCanvasView} from '@flyskywhy/react-native-gcanvas';
+import {PIXI} from 'react-native-pixi';
 
 export default () => (
-  <Expo.GLView
-    style={{ flex: 1 }}
-    onContextCreate={async context => {
-      const app = new PIXI.Application({ context });
+  <GCanvasView
+    style={{flex: 1, height: '100%'}}
+    onCanvasCreate={async canvas => {
+      let context = canvas.getContext('webgl');
+      const app = new PIXI.Application({context});
       const sprite = await PIXI.Sprite.fromExpoAsync(
         'http://i.imgur.com/uwrbErh.png',
       );
@@ -169,4 +146,4 @@ export default () => (
 );
 ```
 
-[![NPM](https://nodei.co/npm/expo-pixi.png)](https://nodei.co/npm/expo-pixi/)
+[![NPM](https://nodei.co/npm/react-native-pixi.png)](https://nodei.co/npm/react-native-pixi/)
