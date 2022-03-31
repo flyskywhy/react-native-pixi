@@ -61,11 +61,13 @@ const texture = await PIXI.Texture.from(require('./icon.png'));
 
 ## Functions
 
-### `new PIXI.Application({ context });`
+### `new PIXI.Application({ context, devicePixelRatio });`
 
 A helper function to create a `PIXI.Application` from a WebGL context.
 
-**`context` is the only required prop.**
+`context` comes from `canvas.getContext('webgl')` with `@flyskywhy/react-native-gcanvas` .
+
+`devicePixelRatio` here should be same with the prop in `<GCanvasView/>` , ref to "Example" below.
 
 [Learn more about PIXI.Application props](http://pixijs.download/dev/docs/PIXI.Application.html)
 
@@ -131,17 +133,25 @@ import React from 'react';
 import {GCanvasView} from '@flyskywhy/react-native-gcanvas';
 import {PIXI} from 'react-native-pixi';
 
+// for game, 1 is more better than PixelRatio.get() to code with physical pixels
+const devicePixelRatio = 1;
+
 export default () => (
   <GCanvasView
     style={{flex: 1, height: '100%'}}
-    onCanvasCreate={async canvas => {
+    onCanvasCreate={async (canvas) => {
       let context = canvas.getContext('webgl');
-      const app = new PIXI.Application({context});
+      const app = new PIXI.Application({
+        context,
+        devicePixelRatio,
+        backgroundColor: '0x7ed321',
+      });
       const sprite = await PIXI.Sprite.fromExpoAsync(
         'http://i.imgur.com/uwrbErh.png',
       );
       app.stage.addChild(sprite);
     }}
+    devicePixelRatio={devicePixelRatio}
   />
 );
 ```
