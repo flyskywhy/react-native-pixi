@@ -5,60 +5,6 @@ Tools to use [Pixi.js](http://www.pixijs.com/) in React Native!
 To get started: `npm install react-native-pixi` in your React Native project and import it with
 `import PIXI from 'react-native-pixi';`.
 
-
-## Side-Effects
-
-To use Pixi.js with React Native you will want to import a modified version of Pixi.js like so:
-
-```js
-
-// ✅
-import { PIXI } from 'react-native-pixi';
-
-// ❌
-import * as PIXI from 'pixi.js';
-
-```
-
-Now you can create a new Application the way you would on the web, but be sure to pass in a `WebGLRenderingContext`.
-
-```js
-const app = new PIXI.Application({ context });
-```
-
-Finally, because of the way React Native currently works you must load in assets asynchronously.
-
-```js
-
-/*
- * Accepts:
- * - Expo.Asset: import { Asset } from 'expo-asset'; Asset.fromModule( ... );
- * - URL (with file extension): 'http://i.imgur.com/uwrbErh.png'
- * - Static Resource: require('./icon.png')
- */
-
-// ✅
-const sprite = await PIXI.Sprite.fromExpoAsync('http://i.imgur.com/uwrbErh.png');
-
-// OR
-
-const texture = await PIXI.Texture.fromExpoAsync('http://i.imgur.com/uwrbErh.png');
-```
-
-Using web syntax will return a `Promise`, and throw a warning. It's bad practice, but if the asset is loaded already, this will work without throwing a warning.
-
-```js
-const sprite = await PIXI.Sprite.from(require('./icon.png'));
-
-// > console.warning(PIXI.Sprite.from(asset: ${typeof asset}) is not supported. Returning a Promise!);
-
-// OR
-
-const texture = await PIXI.Texture.from(require('./icon.png'));
-
-// > console.warning(PIXI.Texture.from(asset: ${typeof asset}) is not supported. Returning a Promise!);
-```
-
 ## Functions
 
 ### `new PIXI.Application({ context, devicePixelRatio });`
@@ -67,32 +13,9 @@ A helper function to create a `PIXI.Application` from a WebGL context.
 
 `context` comes from `canvas.getContext('webgl')` with `@flyskywhy/react-native-gcanvas` .
 
-`devicePixelRatio` here should be same with the prop in `<GCanvasView/>` , ref to "Example" below.
+`devicePixelRatio` here should be same with the prop in `<GCanvasView/>` , ref to "Example As Usage" below.
 
 [Learn more about PIXI.Application props](http://pixijs.download/dev/docs/PIXI.Application.html)
-
-### `PIXI.Texture.fromExpoAsync(resource);`
-
-### `PIXI.Sprite.fromExpoAsync(resource);`
-
-a helper function to resolve the asset passed in.
-`textureAsync` accepts:
-
-* localUri: string | ex: "file://some/path/image.png"
-* static resource: number | ex: require('./image.png')
-* remote url: string | ex: "https://www.something.com/image.png"
-* asset-library: string (iOS `CameraRoll`) | ex: "asset-library://some/path/image.png"
-* Expo Asset: Expo.Asset | learn more: https://docs.expo.io/versions/latest/guides/assets.html
-
-You cannot send in relative string paths as Metro Bundler looks for static resources.
-
----
-
-### `PIXI.Sprite.from(resource);`
-
-### `PIXI.Texture.from(resource);`
-
-Pixi.js does a type check so we wrap our asset in a `HTMLImageElement` shim.
 
 ## `Pixi.Sketch`
 
@@ -124,14 +47,12 @@ A Image component that uses PIXI.Filter
 | filters    |     Array<PIXI.Filter>     |  null   | Array of filters to apply to the image                                       |
 | source     | number, string, Expo.Asset |  null   | Source can be a static resource, image url (not `{uri}`), or an `Expo.Asset` |
 
-## Example
-
-**[Snack](https://snack.expo.io/@bacon/base-pixi.js)**
-
+## Example As Usage
 ```js
 import React from 'react';
 import {GCanvasView} from '@flyskywhy/react-native-gcanvas';
 import {PIXI} from 'react-native-pixi';
+import {Asset} from 'expo-asset';
 
 // for game, 1 is more better than PixelRatio.get() to code with physical pixels
 const devicePixelRatio = 1;
@@ -146,10 +67,43 @@ export default () => (
         devicePixelRatio,
         backgroundColor: '0x7ed321',
       });
-      const sprite = await PIXI.Sprite.fromExpoAsync(
-        'http://i.imgur.com/uwrbErh.png',
+      const imageHttpSrc =
+        'https://gw.alicdn.com/tfs/TB1KwRTlh6I8KJjy0FgXXXXzVXa-225-75.png';
+      // `await Asset.fromModule` needs `expo-file-system`, and `expo-file-system` needs `react-native-unimodules` ,
+      // the installation of `react-native-unimodules` can ref to this commit [expo -> react-native: add react-native-unimodules]
+      // (https://github.com/flyskywhy/snakeRN/commit/90983816de3ad2a4da47ffa0f6d1659c2688be3e)
+      let imageRequireAsset = await Asset.fromModule(
+        require('@flyskywhy/react-native-gcanvas/tools/build_website/assets/logo-gcanvas.png'),
       );
-      app.stage.addChild(sprite);
+      let spriteHttpLoader;
+      let spriteRequireLoader;
+
+      // ref to [Pixi教程](https://github.com/Zainking/learningPixi)
+      PIXI.loader.add(imageHttpSrc);
+      PIXI.loader.add(imageRequireAsset.uri).load(setup);
+
+      function setup(loader, resources) {
+        spriteHttpLoader = new PIXI.Sprite(
+          PIXI.loader.resources[imageHttpSrc].texture,
+        );
+
+        app.stage.addChild(spriteHttpLoader);
+        spriteHttpLoader.y = 700;
+
+        spriteRequireLoader = new PIXI.Sprite(
+          PIXI.loader.resources[imageRequireAsset.uri].texture,
+        );
+        app.stage.addChild(spriteRequireLoader);
+
+        spriteRequireLoader.x = 500;
+        spriteRequireLoader.y = 700;
+
+        app.ticker.add((delta) => gameLoop(delta));
+      }
+
+      function gameLoop(delta) {
+        spriteHttpLoader.y -= 1;
+      }
     }}
     devicePixelRatio={devicePixelRatio}
   />
