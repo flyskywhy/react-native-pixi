@@ -17,7 +17,7 @@ A helper function to create a `PIXI.Application` from a WebGL context.
 
 [Learn more about PIXI.Application props](http://pixijs.download/dev/docs/PIXI.Application.html)
 
-## `Pixi.Sketch`
+## `Pixi.Sketch` (TODO)
 
 A component used for drawing smooth signatures and sketches.
 
@@ -35,7 +35,7 @@ A component used for drawing smooth signatures and sketches.
 | onChange    |     () => PIXI.Renderer     |   null   | Invoked whenever a user is done drawing a line  |
 | onReady     | () => WebGLRenderingContext |   null   | Invoked when the GL context is ready to be used |
 
-## `Pixi.FilterImage`
+## `Pixi.FilterImage` (TODO)
 
 A Image component that uses PIXI.Filter
 
