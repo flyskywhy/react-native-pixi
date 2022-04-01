@@ -1,9 +1,15 @@
 # react-native-pixi
 
+[![npm version](http://img.shields.io/npm/v/react-native-pixi.svg?style=flat-square)](https://npmjs.org/package/react-native-pixi "View this project on npm")
+[![npm downloads](http://img.shields.io/npm/dm/react-native-pixi.svg?style=flat-square)](https://npmjs.org/package/react-native-pixi "View this project on npm")
+[![npm licence](http://img.shields.io/npm/l/react-native-pixi.svg?style=flat-square)](https://npmjs.org/package/react-native-pixi "View this project on npm")
+[![Platform](https://img.shields.io/badge/platform-ios%20%7C%20android-989898.svg?style=flat-square)](https://npmjs.org/package/react-native-pixi "View this project on npm")
+
 Tools to use [Pixi.js](http://www.pixijs.com/) in React Native!
 
-To get started: `npm install react-native-pixi` in your React Native project and import it with
-`import PIXI from 'react-native-pixi';`.
+## Getting Started
+
+    npm install react-native-pixi
 
 ## Functions
 
@@ -16,36 +22,6 @@ A helper function to create a `PIXI.Application` from a WebGL context.
 `devicePixelRatio` here should be same with the prop in `<GCanvasView/>` , ref to "Example As Usage" below.
 
 [Learn more about PIXI.Application props](http://pixijs.download/dev/docs/PIXI.Application.html)
-
-## `Pixi.Sketch` (TODO)
-
-A component used for drawing smooth signatures and sketches.
-
-**See the sketch example on how to save the images!**
-
-> Notice: the edges and ends are not rounded as this is not supported in PIXI yet: [Issue](https://github.com/pixijs/pixi.js/issues/1637)
-
-#### Props
-
-| Property    |            Type             | Default  | Description                                     |
-| ----------- | :-------------------------: | :------: | ----------------------------------------------- |
-| strokeColor |           number            | 0x000000 | Color of the lines                              |
-| strokeWidth |           number            |    10    | Weight of the lines                             |
-| strokeAlpha |           number            |    1     | Opacity of the lines                            |
-| onChange    |     () => PIXI.Renderer     |   null   | Invoked whenever a user is done drawing a line  |
-| onReady     | () => WebGLRenderingContext |   null   | Invoked when the GL context is ready to be used |
-
-## `Pixi.FilterImage` (TODO)
-
-A Image component that uses PIXI.Filter
-
-#### Props
-
-| Property   |            Type            | Default | Description                                                                  |
-| ---------- | :------------------------: | :-----: | ---------------------------------------------------------------------------- |
-| resizeMode |           string           |  null   | Currently only supports `cover`, and `contain`                               |
-| filters    |     Array<PIXI.Filter>     |  null   | Array of filters to apply to the image                                       |
-| source     | number, string, Expo.Asset |  null   | Source can be a static resource, image url (not `{uri}`), or an `Expo.Asset` |
 
 ## Example As Usage
 ```js
@@ -110,4 +86,32 @@ export default () => (
 );
 ```
 
-[![NPM](https://nodei.co/npm/react-native-pixi.png)](https://nodei.co/npm/react-native-pixi/)
+## `Pixi.Sketch` (TODO)
+
+A component used for drawing smooth signatures and sketches.
+
+**See the sketch example on how to save the images!**
+
+> Notice: the edges and ends are not rounded as this is not supported in PIXI yet: [Issue](https://github.com/pixijs/pixi.js/issues/1637)
+
+#### Props
+
+| Property    |            Type             | Default  | Description                                     |
+| ----------- | :-------------------------: | :------: | ----------------------------------------------- |
+| strokeColor |           number            | 0x000000 | Color of the lines                              |
+| strokeWidth |           number            |    10    | Weight of the lines                             |
+| strokeAlpha |           number            |    1     | Opacity of the lines                            |
+| onChange    |     () => PIXI.Renderer     |   null   | Invoked whenever a user is done drawing a line  |
+| onReady     | () => WebGLRenderingContext |   null   | Invoked when the GL context is ready to be used |
+
+## `Pixi.FilterImage` (TODO)
+
+A Image component that uses PIXI.Filter
+
+#### Props
+
+| Property   |            Type            | Default | Description                                                                  |
+| ---------- | :------------------------: | :-----: | ---------------------------------------------------------------------------- |
+| resizeMode |           string           |  null   | Currently only supports `cover`, and `contain`                               |
+| filters    |     Array<PIXI.Filter>     |  null   | Array of filters to apply to the image                                       |
+| source     | number, string, Expo.Asset |  null   | Source can be a static resource, image url (not `{uri}`), or an `Expo.Asset` |

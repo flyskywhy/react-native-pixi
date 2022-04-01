@@ -1,6 +1,6 @@
 {
   "name": "react-native-pixi",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "sideEffects": true,
   "description": "Tools for using pixi in React Native",
   "license": "MIT",
@@ -19,16 +19,20 @@
   },
   "author": "Evan Bacon <bacon@expo.io> (https://expo.io/)",
   "keywords": [
-    "react",
-    "native",
+    "android",
+    "canvas",
     "game",
     "gl",
     "graphics",
+    "ios",
+    "native",
     "opengl",
-    "2d",
     "pixi",
     "pixi.js",
-    "sprite"
+    "react",
+    "react-native",
+    "sprite",
+    "webgl"
   ],
   "directories": {
     "example": "examples",
@@ -52,7 +56,6 @@
     ]
   },
   "dependencies": {
-    "@flyskywhy/react-native-browser-polyfill": "^1.0.3",
     "expo-asset-utils": "^1.1.0",
     "fbemitter": "2.1.1",
     "gl-matrix": "3.4.3",
