@@ -7,6 +7,11 @@
 
 Tools to use [Pixi.js](http://www.pixijs.com/) in React Native!
 
+## Pixi projects ported to react-native-pixi
+* [snakeRN](https://github.com/flyskywhy/snakeRN)
+
+<img src="https://raw.githubusercontent.com/flyskywhy/snakeRN/master/assets/snakeRN.gif" width="480">
+
 ## Getting Started
 
     npm install react-native-pixi
@@ -22,6 +27,9 @@ A helper function to create a `PIXI.Application` from a WebGL context.
 `devicePixelRatio` here should be same with the prop in `<GCanvasView/>` , ref to "Example As Usage" below.
 
 [Learn more about PIXI.Application props](http://pixijs.download/dev/docs/PIXI.Application.html)
+
+### Gesture
+You need write gesture code by yourself, ref to `GestureView` used in https://github.com/flyskywhy/snakeRN/blob/master/GameScreen.js, or https://github.com/metafizzy/zdog/blob/master/js/dragger.js .
 
 ## Example As Usage
 ```js
