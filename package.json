@@ -56,7 +56,6 @@
     ]
   },
   "dependencies": {
-    "expo-asset-utils": "^1.1.0",
     "fbemitter": "2.1.1",
     "gl-matrix": "3.4.3",
     "path": "^0.12.7",
