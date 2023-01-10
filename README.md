@@ -48,7 +48,7 @@ export default () => (
       let context = canvas.getContext('webgl');
       const app = new PIXI.Application({
         context,
-        devicePixelRatio,
+        devicePixelRatio: canvas._devicePixelRatio,
         backgroundColor: '0x7ed321',
       });
       const imageHttpSrc =
