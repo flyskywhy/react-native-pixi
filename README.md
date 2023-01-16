@@ -37,7 +37,6 @@ import React from 'react';
 import {GCanvasView} from '@flyskywhy/react-native-gcanvas';
 import {PIXI} from 'react-native-pixi';
 import {Asset} from 'expo-asset';
-import Loader from 'resource-loader';
 
 // for game, 1 is more better than PixelRatio.get() to code with physical pixels
 const devicePixelRatio = 1;
@@ -68,13 +67,13 @@ export default () => {
     let spriteRequireLoader;
 
     // you can see how to use PIXI.loader in it
-    // spriteByResourceLoader();
+    spriteByResourceLoader();
 
     // or, use new Image() not PIXI.loader in it
     // spriteByNewImage();
 
     // or, just use PIXI.Sprite.from() in it
-    spriteByFrom();
+    // spriteByFrom();
 
     function spriteByResourceLoader() {
       // ref to [Pixi教程](https://github.com/Zainking/learningPixi)
@@ -83,7 +82,11 @@ export default () => {
         .add({
           url: imageRequireAsset.uri,
           // imageRequireAsset must set loadType in this object when build release
-          loadType: Loader.Resource._loadTypeMap[imageRequireAsset.type],
+          //
+          // if 'node_modules/resource-loader' is which pixi.js depends on, then
+          loadType: require('resource-loader').Loader.Resource._loadTypeMap[imageRequireAsset.type],
+          // if 'node_modules/pixi.js/node_modules/resource-loader' is which pixi.js depends on, then
+          // loadType: require('pixi.js/node_modules/resource-loader').Loader.Resource._loadTypeMap[imageRequireAsset.type],
         })
         .load(setup);
 
