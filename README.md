@@ -108,7 +108,7 @@ export default class Pixi extends Component {
       // width: this.canvas.clientWidth * PixelRatio.get() / devicePixelRatio,
       // height: this.canvas.clientHeight * PixelRatio.get() / devicePixelRatio,
       devicePixelRatio,
-      backgroundColor: '0x7ed321',
+      backgroundColor: 0x7ed321,
     });
 
     const imageHttpSrc =
