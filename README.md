@@ -34,13 +34,17 @@ You need write gesture code by yourself, ref to `GestureView` used in https://gi
 ## Example As Usage
 ```js
 import React, {Component} from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import {PixelRatio, Platform, StyleSheet, View} from 'react-native';
 import {GCanvasView} from '@flyskywhy/react-native-gcanvas';
 import {PIXI} from 'react-native-pixi';
 import {Asset} from 'expo-asset';
 
 // for game, 1 is more better than PixelRatio.get() to code with physical pixels
 const devicePixelRatio = 1;
+
+// PIXI default getContext 'webgl', or you can let it getContext '2d' instead against `forceCanvas = true`
+// TODO: debug why the spriteRequireLoader in spriteByResourceLoader() will flick if `forceCanvas = true` on Android
+const forceCanvas = false;
 
 export default class Pixi extends Component {
   constructor(props) {
@@ -84,7 +88,7 @@ export default class Pixi extends Component {
     // should not name this.context because this.context is already be {} here and will
     // be {} again after componentDidUpdate() on react-native or react-native-web, so
     // name this.ctx
-    this.ctx = this.canvas.getContext('webgl');
+    // this.ctx = Platform.OS !== 'web' && this.canvas.getContext(forceCanvas ? '2d' : 'webgl');
 
     this.drawSome();
   };
@@ -102,11 +106,16 @@ export default class Pixi extends Component {
     }
 
     this.app = new PIXI.Application({
-      context: this.ctx,
-      // view: this.canvas,
-      // forceCanvas: true,
-      // width: this.canvas.clientWidth * PixelRatio.get() / devicePixelRatio,
-      // height: this.canvas.clientHeight * PixelRatio.get() / devicePixelRatio,
+      // context: Platform.OS !== 'web' && this.ctx,
+      // view: Platform.OS === 'web' && this.canvas,
+      // If Platform.OS === 'web', if forceCanvas is true, must use `view: this.canvas` instead of `context: this.ctx`,
+      // otherwise even no backgroundColor be seen.
+      // If Platform.OS !== 'web', must use `view: this.canvas` or `context: this.ctx` or `width: , height: `,
+      // otherwise backgroundColor is broken apart if forceCanvas is true, or spriteHttpLoader is too below if forceCanvas is false.
+      view: this.canvas,
+      forceCanvas,
+      // width: this.canvas.clientWidth * PixelRatio.get() / devicePixelRatio | 0,
+      // height: this.canvas.clientHeight * PixelRatio.get() / devicePixelRatio | 0,
       devicePixelRatio,
       backgroundColor: 0x7ed321,
     });
@@ -221,6 +230,7 @@ export default class Pixi extends Component {
             onCanvasResize={this.onCanvasResize}
             onCanvasCreate={this.initCanvas}
             devicePixelRatio={devicePixelRatio}
+            offscreenCanvas={true}
           />
         )}
       </View>
