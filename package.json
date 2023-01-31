@@ -1,6 +1,6 @@
 {
   "name": "react-native-pixi",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "sideEffects": true,
   "description": "Tools for using pixi in React Native",
   "license": "MIT",
