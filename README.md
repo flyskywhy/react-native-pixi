@@ -43,7 +43,6 @@ import {Asset} from 'expo-asset';
 const devicePixelRatio = 1;
 
 // PIXI default getContext 'webgl', or you can let it getContext '2d' instead against `forceCanvas = true`
-// TODO: debug why the spriteRequireLoader in spriteByResourceLoader() will flick if `forceCanvas = true` on Android
 const forceCanvas = false;
 
 export default class Pixi extends Component {
